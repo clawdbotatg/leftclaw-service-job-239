@@ -1,5 +1,7 @@
 # Open DeFi Risk Dashboard
 
+**Live URL:** https://bafybeidjlai5ensmpmt2txl7mnm4vxkib34f5dl63m3ulscymfktmtowei.ipfs.community.bgipfs.com/
+
 A neutral, open-source aggregator of DeFi risk intelligence. It collects what independent risk
 providers publicly say about top Ethereum DeFi protocols and presents those assessments **verbatim,
 side by side** — without ever blending them into a composite score.
