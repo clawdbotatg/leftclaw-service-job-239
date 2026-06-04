@@ -1,83 +1,73 @@
-# 🏗 Scaffold-ETH 2
+# Open DeFi Risk Dashboard
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+A neutral, open-source aggregator of DeFi risk intelligence. It collects what independent risk
+providers publicly say about top Ethereum DeFi protocols and presents those assessments **verbatim,
+side by side** — without ever blending them into a composite score.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+> Built in response to the Ethereum Foundation's DeFi risk-tooling RFP. The seed protocol list is
+> drawn directly from that RFP.
 
-> [!NOTE]
-> 🤖 Scaffold-ETH 2 is AI-ready! It has everything agents need to build on Ethereum. Check `.agents/`, `.claude/`, `.opencode` or `.cursor/` for more info.
+## What it does
 
-⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.
+- **Risk matrix** — a protocol × provider grid showing coverage status (covered, partial, needs
+  verification, not covered, source unavailable) for 20 major Ethereum DeFi protocols across leading
+  risk providers, with links back to each source.
+- **Protocol detail pages** — governance data (forum, Snapshot, Tally, multisig, upgradeability,
+  emergency controls), provenance tags, and per-provider risk feed cards.
+- **Methodology** — a transparent explanation of how protocols and feeds are selected, how coverage
+  is determined, and our charter commitment to never produce composite scores.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+## What it deliberately does not do
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+This dashboard does **not** rate protocols itself, average or weight provider opinions, or rank
+protocols against one another. It surfaces sources; it does not adjudicate them. See the
+`/methodology` page for the full charter.
 
-## Requirements
+## License
 
-Before you begin, you need to install the following tools:
+Licensed under **AGPL 3.0**. This is a public good and is **not financial advice**.
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+## Architecture
 
-## Quickstart
+- **Frontend only** — no smart contracts. Built on the Scaffold-ETH 2 (Next.js App Router, Tailwind,
+  DaisyUI) frontend package, with the wallet/contract UI unused since this is a pure data dashboard.
+- **Static data layer** — all risk and governance data lives in plain JSON under
+  `packages/nextjs/public/data/`:
+  - `protocols.json` — the 20 EF RFP seed protocols + governance metadata
+  - `providers.json` — the tracked risk providers and their self-described methodologies
+  - `risk-data.json` — one entry per protocol × provider pair with coverage status, rating, source
+    URL, and timestamps
+- **Static export** — `yarn build` produces a fully static site in `packages/nextjs/out/`.
+- **Pages** — `/` (dashboard matrix), `/methodology`, `/protocol/[slug]` (statically generated per
+  protocol via `generateStaticParams`).
 
-To get started with Scaffold-ETH 2, follow the steps below:
+## Run locally
 
-1. Install dependencies if it was skipped in CLI:
-
-```
-cd my-dapp-example
+```bash
 yarn install
+cd packages/nextjs
+yarn dev          # http://localhost:3000
 ```
 
-2. Run a local network in the first terminal:
+Production build (static export):
 
-```
-yarn chain
-```
-
-This command starts a local Ethereum network using Foundry. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/foundry/foundry.toml`.
-
-3. On a second terminal, deploy the test contract:
-
-```
-yarn deploy
+```bash
+cd packages/nextjs
+NODE_OPTIONS="--require ./polyfill-localstorage.cjs" NEXT_PUBLIC_IPFS_BUILD=true yarn build
+# output in packages/nextjs/out/
 ```
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/foundry/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/foundry/script` to deploy the contract to the network. You can also customize the deploy script.
+## How to contribute / submit corrections
 
-4. On a third terminal, start your NextJS app:
+All data is open and correctable. If a coverage status, rating, source link, or governance field is
+wrong, out of date, or missing, please
+[open a GitHub issue](https://github.com/clawdbotatg/leftclaw-service-job-239/issues). Data edits are
+simple JSON changes and are reviewed openly.
 
-```
-yarn start
-```
+## Live deployment
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+_Placeholder — IPFS/live URL will be added after deployment._
 
-Run smart contract test with `yarn foundry:test`
+## Reference
 
-- Edit your smart contracts in `packages/foundry/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/foundry/script`
-
-
-## Documentation
-
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+- Ethereum Foundation DeFi risk-tooling RFP (seed protocol list).

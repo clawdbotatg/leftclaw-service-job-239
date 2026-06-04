@@ -11,11 +11,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.NEXT_PUBLIC_IGNORE_BUILD_ERROR === "true",
   },
-  webpack: (config: { resolve: { fallback: Record<string, boolean> }; externals: string[] }) => {
-    config.resolve.fallback = { fs: false, net: false, tls: false };
-    config.externals.push("pino-pretty", "lokijs", "encoding");
-    return config;
-  },
+  // Next.js 16 enables Turbopack by default. An empty turbopack config is enough
+  // for this static data dashboard; no custom webpack plumbing is required.
+  turbopack: {},
 };
 
 module.exports = nextConfig;

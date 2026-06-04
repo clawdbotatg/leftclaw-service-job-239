@@ -21,7 +21,9 @@ const titleTemplate = "%s | Open DeFi Risk Dashboard";
 export const getMetadata = ({
   title,
   description,
-  imageRelativePath = "/og.png",
+  // NOTE: a dedicated 1200x630 /og.png should be added for production social cards.
+  // Until then we fall back to the existing thumbnail asset so unfurls are not broken.
+  imageRelativePath = "/thumbnail.jpg",
 }: {
   title: string;
   description: string;

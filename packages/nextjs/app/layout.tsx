@@ -6,8 +6,9 @@ import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: "Scaffold-ETH 2 App",
-  description: "Built with 🏗 Scaffold-ETH 2",
+  title: "Open DeFi Risk Dashboard",
+  description:
+    "A neutral, open-source aggregator of DeFi risk intelligence from major providers. View what risk assessors say about top Ethereum DeFi protocols — verbatim.",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
